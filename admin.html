@@ -11,34 +11,37 @@
 </head>
 <body class="admin-body">
   <main class="admin-shell">
-    <section class="admin-hero-card">
-      <div class="admin-brand-row">
-        <div class="admin-logo">✦</div>
-        <div>
-          <p class="overline">The Prayer Project</p>
-          <h1>Admin Verification Portal</h1>
-          <p class="admin-subtitle">Create, manage, and verify volunteer hour confirmation records.</p>
-        </div>
-      </div>
-      <div class="admin-actions">
-        <button id="loginBtn" class="primary-btn">Login with Google</button>
-        <button id="logoutBtn" class="secondary-btn" hidden>Logout</button>
-      </div>
-      <p id="authMessage" class="auth-message">Only the authorized Prayer Project admin account may access this page.</p>
+    <section class="admin-login-card" id="loginCard">
+      <div class="admin-logo">✦</div>
+      <p class="overline">The Prayer Project</p>
+      <h1>Admin Verification Portal</h1>
+      <p class="admin-subtitle">Create, edit, invalidate, delete, and manage volunteer hour confirmation records.</p>
+      <button id="loginBtn" class="primary-btn">Admin Login</button>
+      <p id="authMessage" class="auth-message">Authorized access only. Use the Prayer Project administrator account.</p>
     </section>
 
     <section id="adminContent" class="admin-content" hidden>
+      <div class="dashboard-header">
+        <div>
+          <p class="overline">The Prayer Project</p>
+          <h1>Verification Dashboard</h1>
+          <p class="admin-subtitle">Manage official volunteer confirmation records.</p>
+        </div>
+        <button id="logoutBtn" class="secondary-btn">Logout</button>
+      </div>
+
       <div class="stats-row">
         <article><span id="totalRecords">0</span><p>Total Records</p></article>
         <article><span id="activeRecords">0</span><p>Active Records</p></article>
-        <article><span>pray@ask4prayers.com</span><p>Official Admin Email</p></article>
+        <article><span id="invalidRecords">0</span><p>Invalid Records</p></article>
       </div>
 
       <div class="admin-grid">
         <section class="panel create-panel">
-          <h2>Create Verification Record</h2>
-          <p class="panel-note">A Document ID will be generated automatically when the record is created.</p>
+          <h2 id="formTitle">Create Record</h2>
+          <p class="panel-note">Document IDs are generated automatically for new records.</p>
           <form id="recordForm">
+            <input type="hidden" id="editingId">
             <label>Volunteer Name<input id="volunteerName" required></label>
             <label>Age<input id="age" inputmode="numeric"></label>
             <label>Volunteer Email<input id="email" type="email"></label>
@@ -50,18 +53,20 @@
               <label>End Date<input id="endDate"></label>
             </div>
             <label>Total Verified Hours<input id="totalHours" required></label>
-            <button type="submit" class="primary-btn">Create Record</button>
+            <button type="submit" class="primary-btn" id="submitBtn">Create Record</button>
+            <button type="button" class="secondary-btn" id="cancelEditBtn" hidden>Cancel Edit</button>
           </form>
         </section>
 
         <section class="panel records-panel">
           <div class="panel-head">
             <div>
-              <h2>Existing Verification Records</h2>
-              <p class="panel-note">Records shown here are searchable through the public verification page.</p>
+              <h2>Verification Records</h2>
+              <p class="panel-note">Search, edit, invalidate, reactivate, or delete records.</p>
             </div>
             <button id="refreshBtn" class="secondary-btn">Refresh</button>
           </div>
+          <input id="searchRecords" class="search-box" placeholder="Search by name, ID, role, or status">
           <div id="records" class="records"></div>
         </section>
       </div>
