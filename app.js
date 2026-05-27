@@ -1,32 +1,40 @@
-import { db, COLLECTIONS, api, initializeSystem, normalizeDocumentId } from './firebase.js';
-await initializeSystem();
-const form=document.getElementById('verifyForm');
-const input=document.getElementById('documentId');
-const wrap=document.getElementById('resultWrap');
-const card=document.getElementById('resultCard');
-function clean(v){return String(v||'Not listed').replaceAll('<','').replaceAll('>','');}
-form.addEventListener('submit',async e=>{
- e.preventDefault();
- const id=normalizeDocumentId(input.value);
- wrap.hidden=false;
- card.innerHTML='<h3>Checking official records...</h3>';
- const snap=await api.getDoc(api.doc(db,COLLECTIONS.confirmations,id));
- if(!snap.exists()){
-  card.innerHTML='<h3 style="color:#991b1b">Document Not Found</h3><p>No verification record was found for this Document ID.</p><p>Please check the ID exactly as printed on the form or contact pray@ask4prayers.com.</p>';
-  return;
- }
- const d=snap.data();
- const active=(d.status||'Active')==='Active';
- card.innerHTML='<h3 style="color:'+(active?'#166534':'#991b1b')+'">'+(active?'Valid Document':'Document Not Active')+'</h3>'+
- '<p>'+(active?'This volunteer confirmation is listed in the official records of The Prayer Project.':'This document exists, but it is not currently marked active.')+'</p>'+
- '<p><strong>Volunteer Name:</strong> '+clean(d.volunteerName)+'</p>'+
- '<p><strong>Age:</strong> '+clean(d.age)+'</p>'+
- '<p><strong>Position / Role:</strong> '+clean(d.positionRole)+'</p>'+
- '<p><strong>Duties:</strong> '+clean(d.duties)+'</p>'+
- '<p><strong>Service Dates:</strong> '+clean(d.startDate)+' through '+clean(d.endDate)+'</p>'+
- '<p><strong>Total Verified Hours:</strong> '+clean(d.totalHours)+'</p>'+
- '<p><strong>Issued On:</strong> '+clean(d.issuedOn)+'</p>'+
- '<p><strong>Verified By:</strong> '+clean(d.verifiedBy)+'</p>'+
- '<p><strong>Document ID:</strong> '+clean(d.documentId)+'</p>'+
- '<p><strong>Status:</strong> '+clean(d.status||'Active')+'</p>';
+import { db, COLLECTIONS, api, normalizeDocumentId } from './firebase.js';
+
+const form = document.getElementById('verifyForm');
+const input = document.getElementById('documentId');
+const wrap = document.getElementById('resultWrap');
+const card = document.getElementById('resultCard');
+
+function clean(value) {
+  return String(value || 'Not listed').replace(/[<>]/g, '');
+}
+
+function showNotFound(id) {
+  card.className = 'result-card invalid-card';
+  card.innerHTML = '<h3>Document Not Found</h3><p>No verification record exists for <strong>' + clean(id) + '</strong>.</p><p>Please check the Document ID exactly as printed on the form or contact <strong>pray@ask4prayers.com</strong>.</p>';
+}
+
+form.addEventListener('submit', async event => {
+  event.preventDefault();
+  const id = normalizeDocumentId(input.value);
+  wrap.hidden = false;
+  card.className = 'result-card';
+  card.innerHTML = '<h3>Checking official records...</h3><p>Please wait while the verification system searches for this Document ID.</p>';
+
+  try {
+    const snap = await api.getDoc(api.doc(db, COLLECTIONS.confirmations, id));
+    if (!snap.exists()) {
+      showNotFound(id);
+      return;
+    }
+
+    const d = snap.data();
+    const active = (d.status || 'Active') === 'Active';
+    card.className = active ? 'result-card valid-card' : 'result-card invalid-card';
+    card.innerHTML = '<h3>' + (active ? 'Valid Volunteer Confirmation' : 'Document Marked Invalid') + '</h3><p>' + (active ? 'This document is listed in the official records of The Prayer Project.' : 'This document exists, but it has been marked invalid or inactive by an administrator.') + '</p><div class="result-grid"><strong>Document ID</strong><span>' + clean(d.documentId) + '</span><strong>Volunteer Name</strong><span>' + clean(d.volunteerName) + '</span><strong>Age</strong><span>' + clean(d.age) + '</span><strong>Position / Role</strong><span>' + clean(d.positionRole) + '</span><strong>Duties</strong><span>' + clean(d.duties) + '</span><strong>Service Dates</strong><span>' + clean(d.startDate) + ' through ' + clean(d.endDate) + '</span><strong>Total Verified Hours</strong><span>' + clean(d.totalHours) + '</span><strong>Issued On</strong><span>' + clean(d.issuedOn) + '</span><strong>Verified By</strong><span>' + clean(d.verifiedBy) + '</span><strong>Status</strong><span>' + clean(d.status || 'Active') + '</span></div>';
+  } catch (err) {
+    console.error(err);
+    card.className = 'result-card invalid-card';
+    card.innerHTML = '<h3>Verification Error</h3><p>The verification system could not complete the lookup. This usually means Firestore rules are blocking public reads for volunteerConfirmations.</p>';
+  }
 });
