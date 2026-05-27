@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Prayer Project Email Templates</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+  <main class="admin-shell">
+    <section class="panel">
+      <p class="overline">The Prayer Project</p>
+      <h1>Email Templates</h1>
+      <p class="panel-note">Enter a Document ID to generate copy-ready messages for the volunteer or for a school, NHS adviser, counselor, church, or other verification reviewer.</p>
+      <form id="templateForm" class="login-form">
+        <label>Document ID<input id="documentId" required placeholder="TPP-ABC123"></label>
+        <button class="primary-btn" type="submit">Load Templates</button>
+      </form>
+    </section>
+
+    <section id="templateArea" class="admin-grid" hidden>
+      <section class="panel">
+        <h2>Volunteer Confirmation Email</h2>
+        <p class="panel-note">Copy this for the person whose hours were verified.</p>
+        <textarea id="volunteerTemplate" class="template-box" readonly></textarea>
+        <button class="primary-btn" id="copyVolunteer" type="button">Copy Volunteer Email</button>
+      </section>
+      <section class="panel">
+        <h2>Verification Reviewer Email</h2>
+        <p class="panel-note">Copy this for someone requesting to verify a volunteer's hours.</p>
+        <textarea id="reviewerTemplate" class="template-box" readonly></textarea>
+        <button class="primary-btn" id="copyReviewer" type="button">Copy Reviewer Email</button>
+      </section>
+    </section>
+  </main>
+  <script type="module" src="email-templates.js"></script>
+</body>
+</html>
