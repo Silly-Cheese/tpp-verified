@@ -1,1 +1,72 @@
-<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1.0'><title>TPP Admin Portal</title><link rel='stylesheet' href='styles.css'><link href='https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap' rel='stylesheet'></head><body><div class='admin-wrap'><div class='admin-top'><div><h1 style='font-family:Cinzel,serif'>The Prayer Project Admin</h1><p>Volunteer Verification Management Portal</p></div><button id='loginBtn'>Login with Google</button></div><div id='adminContent' style='display:none'><div class='admin-grid'><div class='panel'><h2>Create Verification Record</h2><form id='recordForm'><input id='volunteerName' placeholder='Volunteer Name' required><input id='age' placeholder='Age'><input id='email' placeholder='Volunteer Email'><input id='phone' placeholder='Phone'><input id='positionRole' placeholder='Position / Role'><textarea id='duties' placeholder='Description of Duties'></textarea><input id='startDate' placeholder='Start Date'><input id='endDate' placeholder='End Date'><input id='totalHours' placeholder='Total Verified Hours'><button type='submit'>Create Record</button></form></div><div class='panel'><h2>Existing Records</h2><div id='records' class='records'></div></div></div></div></div><script type='module' src='admin.js'></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Prayer Project Admin Portal</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+  <main class="admin-shell">
+    <section class="admin-hero-card">
+      <div class="admin-brand-row">
+        <div class="admin-logo">✦</div>
+        <div>
+          <p class="overline">The Prayer Project</p>
+          <h1>Admin Verification Portal</h1>
+          <p class="admin-subtitle">Create, manage, and verify volunteer hour confirmation records.</p>
+        </div>
+      </div>
+      <div class="admin-actions">
+        <button id="loginBtn" class="primary-btn">Login with Google</button>
+        <button id="logoutBtn" class="secondary-btn" hidden>Logout</button>
+      </div>
+      <p id="authMessage" class="auth-message">Only the authorized Prayer Project admin account may access this page.</p>
+    </section>
+
+    <section id="adminContent" class="admin-content" hidden>
+      <div class="stats-row">
+        <article><span id="totalRecords">0</span><p>Total Records</p></article>
+        <article><span id="activeRecords">0</span><p>Active Records</p></article>
+        <article><span>pray@ask4prayers.com</span><p>Official Admin Email</p></article>
+      </div>
+
+      <div class="admin-grid">
+        <section class="panel create-panel">
+          <h2>Create Verification Record</h2>
+          <p class="panel-note">A Document ID will be generated automatically when the record is created.</p>
+          <form id="recordForm">
+            <label>Volunteer Name<input id="volunteerName" required></label>
+            <label>Age<input id="age" inputmode="numeric"></label>
+            <label>Volunteer Email<input id="email" type="email"></label>
+            <label>Phone Optional<input id="phone"></label>
+            <label>Position / Role<input id="positionRole"></label>
+            <label>Description of Duties<textarea id="duties"></textarea></label>
+            <div class="two-col">
+              <label>Start Date<input id="startDate"></label>
+              <label>End Date<input id="endDate"></label>
+            </div>
+            <label>Total Verified Hours<input id="totalHours" required></label>
+            <button type="submit" class="primary-btn">Create Record</button>
+          </form>
+        </section>
+
+        <section class="panel records-panel">
+          <div class="panel-head">
+            <div>
+              <h2>Existing Verification Records</h2>
+              <p class="panel-note">Records shown here are searchable through the public verification page.</p>
+            </div>
+            <button id="refreshBtn" class="secondary-btn">Refresh</button>
+          </div>
+          <div id="records" class="records"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="admin.js"></script>
+</body>
+</html>
