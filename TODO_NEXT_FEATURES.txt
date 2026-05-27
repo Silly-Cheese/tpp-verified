@@ -1,0 +1,32 @@
+The Prayer Project Verification Portal - Remaining Feature Checklist
+
+Already Added:
+- Public verification page with result modal
+- Valid, invalid, and checking modal colors and badges
+- Admin email/password login
+- Record creation, editing, invalidation, reactivation, and deletion
+- Invalid reason modal
+- Short Document IDs
+- Hour calculator
+- Custom success, copy, and warning modals
+- Printable confirmation page
+- Print Form button
+- Copy ID button
+- Copy Link button
+- Logout redirects to homepage
+- Firestore final security rules template
+- Volunteer confirmation email template
+
+Still Recommended:
+1. Custom delete confirmation modal to fully replace browser confirm.
+2. Duplicate Document ID retry loop.
+3. Record filters: All, Active, Invalid, Recent.
+4. Audit log viewer inside the admin dashboard.
+5. Email confirmation generator inside admin dashboard.
+6. Final Firestore rules deployment after testing.
+
+Implementation Notes:
+- The main admin.js file is large and some updates may be blocked if pushed as one full overwrite.
+- Future changes should be split into smaller files or modular enhancement files.
+- Keep print.html, print.css, and print.js as the printable document system.
+- Keep SECURITY_RULES_FINAL.txt as the final rules reference.
