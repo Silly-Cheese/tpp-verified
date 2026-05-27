@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Prayer Project Verification Portal</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <img src="logo.png" alt="The Prayer Project logo" class="brand-logo" onerror="this.style.display='none';document.querySelector('.logo-fallback').style.display='grid';">
+      <div class="logo-fallback">✦</div>
+      <div>
+        <div class="brand-kicker">THE</div>
+        <div class="brand-name">Prayer Project</div>
+        <div class="brand-line">Faith • Hope • Community</div>
+      </div>
+    </div>
+    <nav>
+      <a href="#verify">Verify</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a class="nav-button" href="admin.html">Admin</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="verify">
+      <div class="corner-note left">Encouraging prayer.<br>Uplifting others.<br>Building community.</div>
+      <div class="corner-note right">“Pray without ceasing.”<br><span>1 Thessalonians 5:17</span></div>
+      <div class="seal">✦</div>
+      <p class="overline">Official Verification Portal</p>
+      <h1>Verify a Volunteer Hour Confirmation</h1>
+      <div class="divider"><span></span>✦<span></span></div>
+      <p class="hero-copy">Enter the Document ID printed on a Prayer Project volunteer confirmation form to verify whether it exists in our official records.</p>
+      <form id="verifyForm" class="verify-form">
+        <input id="documentId" type="text" placeholder="Enter Document ID" autocomplete="off" required />
+        <button type="submit">Verify Document</button>
+      </form>
+      <p class="security-note">This verification portal helps protect the integrity of volunteer service records.</p>
+    </section>
+
+    <section class="result-wrap" id="resultWrap" hidden>
+      <h2>Verification Result</h2>
+      <div class="divider small"><span></span>✦<span></span></div>
+      <div id="resultCard" class="result-card"></div>
+    </section>
+
+    <section class="info-grid" id="about">
+      <article>
+        <h3>What This Verifies</h3>
+        <p>This portal verifies volunteer confirmation documents issued by The Prayer Project, including the volunteer name, service dates, total verified hours, issue date, and current document status.</p>
+      </article>
+      <article>
+        <h3>Verification Standard</h3>
+        <p>A document is only valid when the Document ID appears in this system as active and matches the information printed on the volunteer confirmation form.</p>
+      </article>
+      <article id="contact">
+        <h3>Official Contact</h3>
+        <p>Questions about verification should be sent to <a href="mailto:pray@ask4prayers.com">pray@ask4prayers.com</a>.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <span>pray@ask4prayers.com</span>
+    <span>ask4prayers.com</span>
+    <span>verify.ask4prayers.com</span>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
