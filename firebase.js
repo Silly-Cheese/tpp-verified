@@ -15,7 +15,7 @@ export const VERIFY_URL = "https://verify.ask4prayers.com";
 export const api = { collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, serverTimestamp, query, orderBy, limit, where, signInWithEmailAndPassword, signOut, onAuthStateChanged };
 
 export function normalizeDocumentId(value){ return String(value||"").trim().toUpperCase().replace(/\s+/g,"-"); }
-export function generateDocumentId(){ const n=new Date(); return `TPP-VOL-${n.getFullYear()}${String(n.getMonth()+1).padStart(2,"0")}${String(n.getDate()).padStart(2,"0")}-${Math.random().toString(36).slice(2,7).toUpperCase()}`; }
+export function generateDocumentId(){ return `TPP-${Math.random().toString(36).slice(2,8).toUpperCase()}`; }
 
 export async function initializeSystem(){
  const systemRef=doc(db,COLLECTIONS.system,"portal");
