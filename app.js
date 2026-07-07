@@ -8,16 +8,17 @@ const card = document.getElementById('resultCard');
 const title = document.getElementById('verifyModalTitle');
 const modalCard = document.querySelector('#verifyModal .modal-card');
 
-function clean(value) {
-  return String(value || 'Not listed').replace(/[<>]/g, '');
-}
+function clean(value) { return String(value || 'Not listed').replace(/[<>]/g, ''); }
+function isExpired(record) { const until = record.validUntil || record.expiresAt || ''; if (!until) return false; const end = new Date(until); return !Number.isNaN(end.getTime()) && end < new Date(); }
 
 function statusInfo(record) {
   const raw = String(record.status || 'Active').trim();
   const normalized = raw.toLowerCase();
+  if (normalized === 'active' && isExpired(record)) return { type: 'neutral', icon: '!', title: 'Document Expired', label: 'Expired', message: 'This document exists, but it is past its active verification period.' };
   if (normalized === 'active') return { type: 'valid', icon: '✓', title: 'Valid Volunteer Confirmation', label: 'Active', message: 'This document is listed as active in the official records of The Prayer Project.' };
   if (normalized === 'expired') return { type: 'neutral', icon: '!', title: 'Document Expired', label: 'Expired', message: 'This document exists, but it is past its active verification period.' };
   if (normalized === 'superseded') return { type: 'neutral', icon: '↺', title: 'Document Superseded', label: 'Superseded', message: 'This document exists, but a newer confirmation may have replaced it.' };
+  if (normalized === 'archived') return { type: 'neutral', icon: '!', title: 'Document Archived', label: 'Archived', message: 'This document is archived and is no longer active for public verification.' };
   if (normalized === 'suspended' || normalized === 'under review') return { type: 'neutral', icon: '!', title: 'Document Under Review', label: raw, message: 'This document exists, but The Prayer Project is reviewing its current verification status.' };
   if (normalized === 'revoked' || normalized === 'invalid') return { type: 'invalid', icon: '✕', title: 'Document Not Active', label: normalized === 'invalid' ? 'Revoked' : raw, message: 'This document exists, but it is no longer active for public verification.' };
   return { type: 'neutral', icon: '!', title: 'Verification Needs Review', label: raw || 'Needs Review', message: 'This document exists, but its current status requires confirmation from The Prayer Project.' };
@@ -64,6 +65,8 @@ function publicResult(record) {
       '<strong>Volunteer Name</strong><span>' + clean(record.volunteerName) + '</span>' +
       '<strong>Position / Role</strong><span>' + clean(record.positionRole || 'Volunteer') + '</span>' +
       '<strong>Service Dates</strong><span>' + clean(record.startDate) + ' through ' + clean(record.endDate) + '</span>' +
+      '<strong>Valid From</strong><span>' + clean(record.validFrom || record.startDate) + '</span>' +
+      '<strong>Valid Until</strong><span>' + clean(record.validUntil || record.endDate || 'No expiration listed') + '</span>' +
       '<strong>Total Verified Hours</strong><span>' + clean(record.totalHours) + '</span>' +
       '<strong>Issued On</strong><span>' + clean(record.issuedOn) + '</span>' +
       '<strong>Verified By</strong><span>' + clean(record.verifiedBy || 'The Prayer Project') + '</span>' +
