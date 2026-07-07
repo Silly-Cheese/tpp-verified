@@ -1,0 +1,34 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function ownerEmail() { return signedIn() && request.auth.token.email == 'pray@ask4prayers.com'; }
+    function isAdmin() { return ownerEmail() || exists(/databases/$(database)/documents/admins/$(request.auth.token.email)); }
+
+    match /volunteerConfirmations/{documentId} {
+      allow get: if true;
+      allow list, create, update, delete: if isAdmin();
+    }
+    match /admins/{adminId} {
+      allow read: if signedIn();
+      allow create, update, delete: if ownerEmail();
+    }
+    match /auditLogs/{logId} {
+      allow read, create: if isAdmin();
+      allow update, delete: if false;
+    }
+    match /documentHistory/{historyId} {
+      allow read, create: if isAdmin();
+      allow update, delete: if false;
+    }
+    match /verificationRequests/{requestId} {
+      allow create: if request.resource.data.requesterEmail is string && request.resource.data.message is string && request.resource.data.status == 'open';
+      allow read, update, delete: if isAdmin();
+    }
+    match /system/{systemId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}
