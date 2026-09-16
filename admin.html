@@ -1,16 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>The Prayer Project Admin Portal</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="verify-v2.css"><link rel="stylesheet" href="admin-v4.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Verification Admin | The Prayer Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin-v4.css">
+</head>
 <body class="admin-body">
-  <main class="admin-shell">
-    <section class="admin-login-card" id="loginCard"><div class="admin-logo">✦</div><p class="overline">The Prayer Project</p><h1>Admin Verification Portal</h1><p class="admin-subtitle">Create, edit, revoke, expire, supersede, and manage volunteer hour confirmation records.</p><form id="loginForm" class="login-form"><label>Admin Email<input id="loginEmail" type="email" value="pray@ask4prayers.com" required></label><label>Password<input id="loginPassword" type="password" required></label><button id="loginBtn" type="submit" class="primary-btn">Sign In</button></form><p id="authMessage" class="auth-message">Authorized access only. Use the Prayer Project administrator account.</p></section>
-    <section id="adminContent" class="admin-content" hidden><div class="dashboard-header"><div><p class="overline">The Prayer Project</p><h1>Verification Dashboard</h1><p class="admin-subtitle">Manage official volunteer confirmation records.</p></div><div class="admin-actions"><a href="email-templates.html" target="_blank" class="secondary-btn">Email Templates</a><button id="logoutBtn" class="secondary-btn">Logout</button></div></div><div class="stats-row"><article><span id="totalRecords">0</span><p>Total Records</p></article><article><span id="activeRecords">0</span><p>Active Records</p></article><article><span id="invalidRecords">0</span><p>Inactive Records</p></article></div><div class="admin-grid"><section class="panel create-panel"><h2>Create Record</h2><p class="panel-note">Enter the service start/end time below and the system will calculate the total verified hours for you.</p><form id="recordForm"><label>Volunteer Name<input id="volunteerName" required></label><label>Age<input id="age" inputmode="numeric"></label><label>Volunteer Email<input id="email" type="email"></label><label>Phone Optional<input id="phone"></label><label>Position / Role<input id="positionRole"></label><label>Description of Duties<textarea id="duties"></textarea></label><div class="two-col"><label>Start Date<input id="startDate" type="date"></label><label>End Date<input id="endDate" type="date"></label></div><div class="two-col"><label>Service Start Time<input id="serviceStartTime" type="time"></label><label>Service End Time<input id="serviceEndTime" type="time"></label></div><label>Total Verified Hours<input id="totalHours" required readonly></label><button type="button" class="secondary-btn" id="calculateHoursBtn">Calculate Hours</button><button type="submit" class="primary-btn" id="submitBtn">Create Record</button></form></section><section class="panel records-panel"><div class="panel-head"><div><h2>Verification Records</h2><p class="panel-note">Search, edit, revoke, expire, supersede, reactivate, or archive records.</p></div><button id="refreshBtn" class="secondary-btn">Refresh</button></div><input id="searchRecords" class="search-box" placeholder="Search by name, ID, role, or status"><div id="records" class="records"></div></section></div></section>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+
+  <main id="loginView" class="login-stage">
+    <section class="login-card" aria-labelledby="loginTitle">
+      <div class="brand-lockup login-brand">
+        <div class="brand-mark" aria-hidden="true">TPP</div>
+        <div>
+          <p class="eyebrow">The Prayer Project</p>
+          <p class="brand-name">Verification Office</p>
+        </div>
+      </div>
+
+      <div class="login-copy">
+        <span class="secure-badge">Authorized access</span>
+        <h1 id="loginTitle">Manage every verification with confidence.</h1>
+        <p>Issue volunteer-hour records, review requests, maintain document status, and export official reports from one secure workspace.</p>
+      </div>
+
+      <form id="loginForm" class="login-form">
+        <label class="field">
+          <span>Administrator email</span>
+          <input id="loginEmail" type="email" autocomplete="username" value="pray@ask4prayers.com" required>
+        </label>
+        <label class="field">
+          <span>Password</span>
+          <span class="password-wrap">
+            <input id="loginPassword" type="password" autocomplete="current-password" required>
+            <button id="togglePassword" type="button" class="text-button" aria-label="Show password">Show</button>
+          </span>
+        </label>
+        <button id="loginButton" type="submit" class="button button-primary button-large">Sign in to verification</button>
+        <p id="authMessage" class="form-message" aria-live="polite">Use the authorized Prayer Project administrator account.</p>
+      </form>
+
+      <footer class="login-footer">
+        <span>verify.ask4prayers.com</span>
+        <span>Private administrative system</span>
+      </footer>
+    </section>
   </main>
-  <div id="editModal" class="modal-backdrop" hidden><section class="modal-card"><div class="modal-head"><div><p class="overline">Edit Verification</p><h2>Edit Record</h2></div><button id="closeEditModal" class="secondary-btn">Close</button></div><form id="editForm" class="modal-form"><input type="hidden" id="editDocumentId"><label>Volunteer Name<input id="editVolunteerName" required></label><label>Age<input id="editAge" inputmode="numeric"></label><label>Volunteer Email<input id="editEmail" type="email"></label><label>Phone Optional<input id="editPhone"></label><label>Position / Role<input id="editPositionRole"></label><label>Description of Duties<textarea id="editDuties"></textarea></label><div class="two-col"><label>Start Date<input id="editStartDate" type="date"></label><label>End Date<input id="editEndDate" type="date"></label></div><div class="two-col"><label>Service Start Time<input id="editServiceStartTime" type="time"></label><label>Service End Time<input id="editServiceEndTime" type="time"></label></div><label>Total Verified Hours<input id="editTotalHours" required readonly></label><button type="button" class="secondary-btn" id="editCalculateHoursBtn">Calculate Hours</button><button type="submit" class="primary-btn">Save Changes</button></form></section></div>
-  <div id="invalidModal" class="modal-backdrop" hidden><section class="modal-card status-invalid"><div class="modal-head"><div><p class="overline">Revoke Verification</p><h2>Why is this document no longer active?</h2></div><button id="closeInvalidModal" class="secondary-btn">Close</button></div><form id="invalidForm" class="modal-form"><input type="hidden" id="invalidDocumentId"><p class="panel-note">This reason is internal. The public result will only say the document is no longer active and should contact The Prayer Project for more information.</p><label>Internal Revocation Reason<textarea id="invalidReason" required placeholder="Internal note only. Do not write this for public display."></textarea></label><button type="submit" class="primary-btn">Confirm Revocation</button></form></section></div>
-  <script type="module" src="admin.js"></script>
-  <script type="module" src="verify-admin-v2.js"></script>
-  <script type="module" src="verify-admin-v3.js"></script>
+
+  <div id="appView" class="app-shell" hidden>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <div class="brand-lockup">
+          <div class="brand-mark" aria-hidden="true">TPP</div>
+          <div>
+            <p class="eyebrow">The Prayer Project</p>
+            <p class="brand-name">Verify Admin</p>
+          </div>
+        </div>
+        <button id="closeNav" class="icon-button nav-close" type="button" aria-label="Close navigation">×</button>
+      </div>
+
+      <nav class="nav-list" aria-label="Admin sections">
+        <p class="nav-label">Workspace</p>
+        <button class="nav-item active" type="button" data-view="overview">
+          <span class="nav-icon" aria-hidden="true">⌂</span><span>Overview</span>
+        </button>
+        <button class="nav-item" type="button" data-view="records">
+          <span class="nav-icon" aria-hidden="true">▤</span><span>Records</span><span id="navRecordCount" class="nav-count">0</span>
+        </button>
+        <button class="nav-item" type="button" data-view="create">
+          <span class="nav-icon" aria-hidden="true">＋</span><span>New verification</span>
+        </button>
+        <button class="nav-item" type="button" data-view="requests">
+          <span class="nav-icon" aria-hidden="true">◇</span><span>Requests</span><span id="navRequestCount" class="nav-count">0</span>
+        </button>
+
+        <p class="nav-label nav-label-spaced">Operations</p>
+        <button class="nav-item" type="button" data-view="reports">
+          <span class="nav-icon" aria-hidden="true">↗</span><span>Reports</span>
+        </button>
+        <button class="nav-item" type="button" data-view="templates">
+          <span class="nav-icon" aria-hidden="true">◫</span><span>Templates</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="admin-profile">
+          <span id="adminInitials" class="avatar">CS</span>
+          <span class="admin-profile-copy">
+            <strong id="adminName">Administrator</strong>
+            <small id="adminEmail">Authorized account</small>
+          </span>
+        </div>
+        <button id="logoutButton" class="button button-ghost sidebar-logout" type="button">Sign out</button>
+      </div>
+    </aside>
+
+    <button id="navScrim" class="nav-scrim" type="button" aria-label="Close navigation" hidden></button>
+
+    <section class="workspace">
+      <header class="topbar">
+        <div class="topbar-title">
+          <button id="openNav" class="icon-button mobile-menu" type="button" aria-label="Open navigation">☰</button>
+          <div>
+            <p id="pageEyebrow" class="eyebrow">Verification workspace</p>
+            <h1 id="pageTitle">Overview</h1>
+            <p id="pageSubtitle">A clear view of records, requests, and document health.</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <span id="syncStatus" class="sync-status"><span></span> Ready</span>
+          <button id="refreshButton" class="button button-secondary" type="button">Refresh</button>
+          <button id="headerCreateButton" class="button button-primary" type="button">New verification</button>
+        </div>
+      </header>
+
+      <div id="workspaceContent" class="workspace-content" aria-live="polite"></div>
+
+      <footer class="app-footer">
+        <span>The Prayer Project Verification Office</span>
+        <span>Official records at verify.ask4prayers.com</span>
+      </footer>
+    </section>
+  </div>
+
+  <div id="statusDialog" class="dialog-backdrop" hidden>
+    <section class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="statusDialogTitle">
+      <div class="dialog-header">
+        <div>
+          <p class="eyebrow">Document status</p>
+          <h2 id="statusDialogTitle">Update verification status</h2>
+        </div>
+        <button class="icon-button" type="button" data-close-dialog="statusDialog" aria-label="Close">×</button>
+      </div>
+      <form id="statusForm" class="dialog-form">
+        <input id="statusRecordKey" type="hidden">
+        <label class="field">
+          <span>New status</span>
+          <select id="statusValue" required>
+            <option>Active</option>
+            <option>Under Review</option>
+            <option>Expired</option>
+            <option>Superseded</option>
+            <option>Revoked</option>
+            <option>Archived</option>
+          </select>
+        </label>
+        <label id="statusReasonField" class="field" hidden>
+          <span>Internal reason</span>
+          <textarea id="statusReason" rows="4" placeholder="This note is never shown on the public verification page."></textarea>
+        </label>
+        <p id="statusHelp" class="field-help">The public verification message will update automatically.</p>
+        <div class="dialog-actions">
+          <button class="button button-secondary" type="button" data-close-dialog="statusDialog">Cancel</button>
+          <button class="button button-primary" type="submit">Save status</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <div id="recordDialog" class="dialog-backdrop" hidden>
+    <section class="dialog-card dialog-wide" role="dialog" aria-modal="true" aria-labelledby="recordDialogTitle">
+      <div class="dialog-header">
+        <div>
+          <p class="eyebrow">Verification details</p>
+          <h2 id="recordDialogTitle">Record</h2>
+        </div>
+        <button class="icon-button" type="button" data-close-dialog="recordDialog" aria-label="Close">×</button>
+      </div>
+      <div id="recordDialogBody"></div>
+    </section>
+  </div>
+
+  <div id="historyDialog" class="dialog-backdrop" hidden>
+    <section class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="historyDialogTitle">
+      <div class="dialog-header">
+        <div>
+          <p class="eyebrow">Document timeline</p>
+          <h2 id="historyDialogTitle">Record history</h2>
+        </div>
+        <button class="icon-button" type="button" data-close-dialog="historyDialog" aria-label="Close">×</button>
+      </div>
+      <div id="historyDialogBody" class="timeline"></div>
+    </section>
+  </div>
+
+  <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
   <script type="module" src="admin-v4.js"></script>
 </body>
 </html>
