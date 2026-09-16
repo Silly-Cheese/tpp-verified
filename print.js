@@ -52,7 +52,7 @@ async function loadRecord() {
   setField('duties', data.duties);
   setField('serviceDates', joinedRange(data.startDate, data.endDate));
   setField('serviceTime', data.serviceStartTime && data.serviceEndTime ? `${data.serviceStartTime} – ${data.serviceEndTime}` : (data.serviceStartTime || data.serviceEndTime || 'Not Listed'));
-  setField('totalHours', `${data.totalHours || ''} Hours`);
+  setField('totalHours', `${data.totalHours ?? '—'} Hours`);
   setField('documentId', data.documentId);
   setField('headerDocumentId', data.documentId);
   setField('status', data.status || 'Active');
@@ -61,7 +61,7 @@ async function loadRecord() {
   setField('checksum', hash);
   setField('verifyLink', directLink);
   const qr = document.getElementById('qrCode');
-  if (qr) qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(directLink)}`;
+  if (qr) qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=360x360&margin=16&ecc=M&data=${encodeURIComponent(directLink)}`;
   document.getElementById('copyDocIdBtn')?.addEventListener('click', () => navigator.clipboard?.writeText(data.documentId || recordId));
   document.getElementById('copyVerifyBtn')?.addEventListener('click', () => navigator.clipboard?.writeText(directLink));
   document.title = `${data.documentId} - Volunteer Confirmation`;
