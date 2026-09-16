@@ -1,46 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Prayer Project Verification Portal</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="prayer-project-theme.css" />
-  <link rel="stylesheet" href="mobile-polish.css" />
-  <link rel="stylesheet" href="mobile-overflow-fix.css" />
-  <link rel="stylesheet" href="verify-v2.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090b0a">
+  <meta name="description" content="Verify official volunteer service confirmations issued by The Prayer Project.">
+  <title>Verify a Service Record | The Prayer Project</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Caslon+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="public-body">
   <header class="site-header">
-    <div class="brand">
-      <img src="logo.png" alt="The Prayer Project logo" class="brand-logo" onerror="this.style.display='none';document.querySelector('.logo-fallback').style.display='grid';">
-      <div class="logo-fallback">✦</div>
-      <div><div class="brand-kicker">THE</div><div class="brand-name">Prayer Project</div><div class="brand-line">Faith • Hope • Community</div></div>
-    </div>
-    <nav><a href="#verify">Verify</a><a href="#about">About</a><a href="#contact">Contact</a><a class="nav-button" href="admin.html">Admin</a></nav>
+    <a class="brand" href="https://ask4prayers.com" aria-label="The Prayer Project home">
+      <span class="brand-mark" aria-hidden="true">
+        <img src="logo.png" alt="" onerror="this.remove()">
+        <span>TPP</span>
+      </span>
+      <span class="brand-copy">
+        <strong>The Prayer Project</strong>
+        <small>Official records</small>
+      </span>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a class="active" href="#verify">Verify</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="mailto:pray@ask4prayers.com">Get help</a>
+      <a class="nav-button" href="admin.html">Staff sign in</a>
+    </nav>
   </header>
+
   <main>
     <section class="hero" id="verify">
-      <div class="seal">✦</div>
-      <p class="overline">Official Verification Portal</p>
-      <h1>Verify a Volunteer Hour Confirmation</h1>
-      <div class="divider"><span></span>✦<span></span></div>
-      <p class="hero-copy">Enter the Document ID printed on a Prayer Project volunteer confirmation form to verify whether it exists in our official records.</p>
-      <form id="verifyForm" class="verify-form"><input id="documentId" type="text" placeholder="Enter Document ID" autocomplete="off" required /><button type="submit">Verify Document</button></form>
-      <p class="security-note">This verification portal protects document integrity while limiting public information to essential verification details.</p>
+      <div class="hero-copy-block">
+        <p class="eyebrow"><span></span> Official verification portal</p>
+        <h1>Confirm a volunteer service record.</h1>
+        <p class="hero-copy">Check whether a volunteer-hour confirmation was officially issued by The Prayer Project and see its current status.</p>
+        <div class="trust-list" aria-label="Verification benefits">
+          <span><i>✓</i> Instant status</span>
+          <span><i>✓</i> Privacy protected</span>
+          <span><i>✓</i> Official record</span>
+        </div>
+      </div>
+
+      <div class="lookup-card">
+        <div class="lookup-icon" aria-hidden="true">✓</div>
+        <p class="form-label">Document lookup</p>
+        <h2>Enter the document ID</h2>
+        <p>Find the ID near the top of the printed or digital confirmation.</p>
+        <form id="verifyForm" class="verify-form">
+          <label for="documentId">Document ID</label>
+          <div class="input-shell">
+            <span aria-hidden="true">#</span>
+            <input id="documentId" type="text" placeholder="TPP-XXXXXX" autocomplete="off" autocapitalize="characters" spellcheck="false" required>
+          </div>
+          <button type="submit">
+            <span>Verify record</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </form>
+        <p class="security-note">Only essential service details are shown. Private contact information and internal notes remain protected.</p>
+      </div>
     </section>
-    <section class="info-grid" id="about">
-      <article><h3>What This Verifies</h3><p>This portal verifies confirmation documents issued by The Prayer Project, including the document status, volunteer name, role, service dates, verified hours, and issue date.</p></article>
-      <article><h3>Privacy Standard</h3><p>Public lookup results do not display internal notes, discipline explanations, phone numbers, or private administrative reasons.</p></article>
-      <article id="contact"><h3>Official Contact</h3><p>Questions about verification should be sent to <a href="mailto:pray@ask4prayers.com">pray@ask4prayers.com</a>.</p></article>
+
+    <section class="confidence-strip" aria-label="Portal information">
+      <div><strong>Official</strong><span>Prayer Project records</span></div>
+      <div><strong>Secure</strong><span>Limited public details</span></div>
+      <div><strong>Current</strong><span>Live document status</span></div>
+    </section>
+
+    <section class="how-section" id="how-it-works">
+      <div class="section-heading">
+        <p class="eyebrow"><span></span> Simple and dependable</p>
+        <h2>Know what you’re looking at.</h2>
+        <p>The portal confirms the record against our official database and clearly explains what its current status means.</p>
+      </div>
+      <div class="steps">
+        <article>
+          <span class="step-number">01</span>
+          <h3>Find the ID</h3>
+          <p>Locate the unique TPP document ID on the volunteer confirmation.</p>
+        </article>
+        <article>
+          <span class="step-number">02</span>
+          <h3>Run the check</h3>
+          <p>Enter the ID exactly as shown. Capitalization and extra spaces are handled automatically.</p>
+        </article>
+        <article>
+          <span class="step-number">03</span>
+          <h3>Review the status</h3>
+          <p>Compare the official result with the document you received.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="help-panel" id="contact">
+      <div>
+        <p class="eyebrow"><span></span> Need another set of eyes?</p>
+        <h2>We can help confirm it.</h2>
+        <p>If a document cannot be found or its details do not match, contact The Prayer Project before accepting it as verified.</p>
+      </div>
+      <a href="mailto:pray@ask4prayers.com?subject=Volunteer%20record%20verification">Contact verification support <span aria-hidden="true">→</span></a>
     </section>
   </main>
-  <div id="verifyModal" class="modal-backdrop" hidden><section class="modal-card"><div class="modal-head"><div><p class="overline">Verification Result</p><h2 id="verifyModalTitle">Result</h2></div><button id="closeVerifyModal" class="secondary-btn">Close</button></div><div id="resultCard" class="result-card"></div></section></div>
-  <footer><span>pray@ask4prayers.com</span><span>ask4prayers.com</span><span>verify.ask4prayers.com</span></footer>
+
+  <div id="verifyModal" class="modal-backdrop" hidden>
+    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="verifyModalTitle">
+      <div class="modal-head">
+        <div>
+          <p class="eyebrow"><span></span> Verification result</p>
+          <h2 id="verifyModalTitle">Result</h2>
+        </div>
+        <button id="closeVerifyModal" class="icon-button" aria-label="Close verification result">×</button>
+      </div>
+      <div id="resultCard" class="result-card"></div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="footer-brand">
+      <strong>The Prayer Project</strong>
+      <span>Faith expressed through prayer, care, and service.</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://ask4prayers.com">Main website</a>
+      <a href="mailto:pray@ask4prayers.com">pray@ask4prayers.com</a>
+    </div>
+    <span class="footer-meta">Official verification portal</span>
+  </footer>
+
   <script type="module" src="app.js"></script>
-  <script type="module" src="verify-v3.js"></script>
 </body>
 </html>
