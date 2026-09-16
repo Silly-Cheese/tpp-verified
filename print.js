@@ -13,6 +13,20 @@ function setField(fieldId, value) {
   if (element) element.textContent = value || 'Not Listed';
 }
 
+function formatDate(value) {
+  if (!value) return '';
+  const parts = String(value).split('-');
+  if (parts.length === 3) return `${parts[1]}/${parts[2]}/${parts[0]}`;
+  return String(value);
+}
+
+function joinedRange(start, end, separator = ' – ') {
+  const first = formatDate(start);
+  const second = formatDate(end);
+  if (first && second) return first === second ? first : first + separator + second;
+  return first || second || 'Not Listed';
+}
+
 function checksum(value) {
   let hash = 0;
   for (let i = 0; i < value.length; i++) hash = ((hash << 5) - hash + value.charCodeAt(i)) | 0;
@@ -30,16 +44,19 @@ async function loadRecord() {
   const directLink = `${VERIFY_URL || 'https://verify.ask4prayers.com'}?id=${encodeURIComponent(data.documentId || recordId)}`;
   const hash = checksum((data.documentId || recordId) + (data.volunteerName || '') + (data.totalHours || ''));
   setField('volunteerName', data.volunteerName);
+  setField('volunteerNameDetail', data.volunteerName);
   setField('age', data.age);
   setField('email', data.email);
   setField('phone', data.phone);
   setField('positionRole', data.positionRole);
   setField('duties', data.duties);
-  setField('serviceDates', `${data.startDate || ''} through ${data.endDate || ''}`);
-  setField('serviceTime', `${data.serviceStartTime || ''} - ${data.serviceEndTime || ''}`);
+  setField('serviceDates', joinedRange(data.startDate, data.endDate));
+  setField('serviceTime', data.serviceStartTime && data.serviceEndTime ? `${data.serviceStartTime} – ${data.serviceEndTime}` : (data.serviceStartTime || data.serviceEndTime || 'Not Listed'));
   setField('totalHours', `${data.totalHours || ''} Hours`);
   setField('documentId', data.documentId);
+  setField('headerDocumentId', data.documentId);
   setField('status', data.status || 'Active');
+  document.querySelector('.official-form')?.setAttribute('data-status', String(data.status || 'Active').toLowerCase());
   setField('issuedOn', data.issuedOn || new Date().toLocaleDateString());
   setField('checksum', hash);
   setField('verifyLink', directLink);
