@@ -95,3 +95,9 @@ form.addEventListener('submit', async event => {
     card.innerHTML = '<h3>Verification Error</h3><p>The verification system could not complete the lookup. Please try again later or contact <strong>pray@ask4prayers.com</strong>.</p>';
   }
 });
+
+const requestedDocumentId = new URLSearchParams(window.location.search).get('id');
+if (requestedDocumentId) {
+  input.value = requestedDocumentId;
+  window.setTimeout(() => form.requestSubmit(), 250);
+}
